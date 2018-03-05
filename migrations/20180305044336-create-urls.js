@@ -8,6 +8,7 @@ module.exports = {
     },
     tiny_url: {
       type: Sequelize.STRING,
+      unique: true,
     },
     long_url: {
       type: Sequelize.STRING,

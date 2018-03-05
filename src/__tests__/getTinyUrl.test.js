@@ -15,7 +15,7 @@ describe('Testing the Hapi server that returns tiny url on passing long url', ()
       },
     };
     Server.inject(request, (response) => {
-      expect(response.uniqueString).toBe(false);
+      expect(response.result.uniqueString.length).toBe(6);
       done();
     });
   });
@@ -28,7 +28,13 @@ describe('Testing the Hapi server that returns tiny url on passing long url', ()
       },
     };
     Server.inject(request, (response) => {
-      expect(response.uniqueString).toBe(false);
+      expect(response.result).toEqual({
+        statusCode: 404,
+        tinyUrl: '',
+        longUrl: '',
+        uniqueString: '',
+        error: 'Invalid input url',
+      });
       done();
     });
   });
@@ -41,7 +47,8 @@ describe('Testing the Hapi server that returns tiny url on passing long url', ()
       },
     };
     Server.inject(request, (response) => {
-      expect(response.body).toBe(false);
+      expect(response.result.tinyUrl).toBe(`http://tiny.url/${response.result.uniqueString}`);
+      expect(response.result.error).toBe('');
       done();
     });
   });
