@@ -1,5 +1,5 @@
-const Server = require('../server');
-const Routes = require('../routes');
+const Server = require('../src/server');
+const Routes = require('../src/routes');
 
 describe('Testing the Hapi server that processes the requests', () => {
   test('Should contain correct number of routes', () => {
@@ -12,6 +12,16 @@ describe('Testing the Hapi server that processes the requests', () => {
     };
     Server.inject(request, (response) => {
       expect(response.statusCode).toBe(200);
+      done();
+    });
+  });
+  test('Should return pong for sucessful GET request to /ping', (done) => {
+    const request = {
+      method: 'GET',
+      url: '/ping',
+    };
+    Server.inject(request, (response) => {
+      expect(response.result).toBe('pong');
       done();
     });
   });

@@ -7,7 +7,8 @@ module.exports = {
       type: Sequelize.INTEGER,
     },
     tiny_url: {
-      type: Sequelize.STRING,
+      type: Sequelize.STRING(6),
+      allowNull: false, // Maybe not useful because of unique as true
       unique: true,
     },
     long_url: {

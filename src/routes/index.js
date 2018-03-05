@@ -1,13 +1,7 @@
 const getTinyUrl = require('./getTinyUrl');
 const getLongUrl = require('./getLongUrl');
-
-const pingService = [{
-  method: 'GET',
-  path: '/',
-  handler: (request, response) => {
-    response('PONG');
-  },
-}];
+const slash = require('./slash');
+const ping = require('./ping');
 
 
-module.exports = [].concat(getTinyUrl, getLongUrl, pingService);
+module.exports = [].concat(getTinyUrl, getLongUrl, slash, ping);

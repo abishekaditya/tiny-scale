@@ -7,9 +7,7 @@ const returnUniqueHash = (longUrl) => {
   const tempTinyUrl = md5(longUrl);
   let startIndex = 0;
   let endIndex = 6;
-  console.log('----------');
-  while (localHash.has(tempTinyUrl.slice(startIndex, endIndex))) {
-    console.log(tempTinyUrl.slice(startIndex, endIndex));
+  while (localHash.has(tempTinyUrl.slice(startIndex, endIndex)) && endIndex < 128) {
     startIndex += 6;
     endIndex += 6;
   }
