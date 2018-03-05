@@ -1,4 +1,4 @@
-const Server = require('./server');
+const Server = require('../server');
 const Routes = require('../routes');
 
 describe('Testing the Hapi server that processes the requests', () => {
