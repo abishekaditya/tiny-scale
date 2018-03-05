@@ -1,5 +1,5 @@
 module.exports = [{
-  method: 'GET',
+  method: 'POST',
   path: '/getTinyUrl',
   handler: (request, response) => {
     response('PONG');
