@@ -3,9 +3,9 @@ module.exports = (sequelize, DataTypes) => {
     tiny_url: DataTypes.STRING(6),
     long_url: DataTypes.STRING,
   }, {});
-  urls.createObject = (tinyUrl, longUrl) => urls.findOrCreate({
+  urls.createObject = (tinyUrl, longUrl) => urls.findCreateFind({
     where: { tiny_url: tinyUrl },
-    default: {
+    defaults: {
       long_url: longUrl,
     },
   });
