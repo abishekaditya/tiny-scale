@@ -3,10 +3,18 @@ const Models = require('../../models');
 beforeEach((done) => {
   Models.urls.destroy({
     truncate: true,
+  }).then(() => {
+    Models.urls.create({
+      tiny_url: 'abcdef',
+      long_url: 'http://test.url',
+    }).then(() => {
+      done();
+    });
   });
-  Models.urls.create({
-    tiny_url: 'abcdef',
-    long_url: 'http://test.url',
+});
+afterAll((done) => {
+  Models.urls.destroy({
+    truncate: true,
   }).then(() => {
     done();
   });
