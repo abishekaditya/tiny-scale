@@ -3,10 +3,17 @@ const Routes = require('../src/routes');
 const Models = require('../models');
 
 describe('Testing the Hapi server that returns tiny url on passing long url', () => {
-  beforeEach((done) => {
+  beforeAll((done) => {
     Models.urls.create({
       long_url: 'http://test.me',
       tiny_url: 'abcdef',
+    }).then(() => {
+      done();
+    });
+  });
+  afterAll((done) => {
+    Models.urls.destroy({
+      truncate: true,
     }).then(() => {
       done();
     });
@@ -17,8 +24,7 @@ describe('Testing the Hapi server that returns tiny url on passing long url', ()
       url: '/getLongUrl?tinyUrl=abcdef',
     };
     Server.inject(request, (response) => {
-      console.log(response.result);
-      expect(response.result).toBe(false);
+      expect(response.result.long_url).toBe('http://test.me');
       done();
     });
   });
