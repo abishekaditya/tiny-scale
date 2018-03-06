@@ -1,5 +1,5 @@
-const Server = require('../server');
-const Routes = require('../routes');
+const Server = require('../src/server');
+const Routes = require('../src/routes');
 
 describe('Testing the Hapi server that returns tiny url on passing long url', () => {
   test('Should contain correct number of routes', () => {

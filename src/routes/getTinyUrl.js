@@ -1,5 +1,14 @@
-const md5 = require('md5');
 const Models = require('../../models');
+const generateUrlHash = require('../helpers/generateUrlHash');
+
+const tryInsert = (longUrl, tinyUrl) => Models.urls.createObject(tinyUrl, longUrl).then((urlInsertResponse) => {
+  if (urlInsertResponse[1] === true) {
+    return true;
+  } else if (urlInsertResponse[0].long_url === longUrl) {
+    return true;
+  }
+  return false;
+});
 
 module.exports = [{
   method: 'POST',
@@ -15,69 +24,25 @@ module.exports = [{
         error: 'Invalid input url',
       });
     } else {
-      let tinyUrl = md5(longUrl).slice(0, 6);
-      Models.urls.findCreateFind({
-        where: {
-          tiny_url: tinyUrl,
-        },
-        defaults: {
-          tiny_url: tinyUrl,
-          long_url: longUrl,
-        },
-      }).spread((url, created) => {
-        if (created) {
+      let startIndex = 0;
+      const length = 6;
+      let isUniqueReturned = false;
+      while (!isUniqueReturned) {
+        const urlHash = generateUrlHash(longUrl, startIndex, length);
+        const insertResponse = tryInsert(longUrl, urlHash);
+        if (insertResponse) {
+          isUniqueReturned = true;
           response({
             statusCode: 201,
-            tinyUrl: `http://tiny.url/${tinyUrl}`,
+            tinyUrl: `http://tiny.url/${urlHash}`,
             longUrl,
-            uniqueString: tinyUrl,
-            error: '',
-          });
-        } else if (!created && url.long_url !== longUrl) {
-          tinyUrl = md5(longUrl).slice(1, 7);
-          Models.urls.findCreateFind({
-            where: {
-              tiny_url: tinyUrl,
-            },
-            defaults: {
-              tiny_url: tinyUrl,
-              long_url: longUrl,
-            },
-          }).then(() => {
-            response({
-              statusCode: 201,
-              tinyUrl: `http://tiny.url/${tinyUrl}`,
-              longUrl,
-              uniqueString: tinyUrl,
-              error: '',
-            });
-          });
-        } else if (!created && url.long_url === longUrl) {
-          response({
-            statusCode: 201,
-            tinyUrl: `http://tiny.url/${tinyUrl}`,
-            longUrl,
-            uniqueString: tinyUrl,
+            uniqueString: urlHash,
             error: '',
           });
         } else {
-          response({
-            statusCode: 404,
-            tinyUrl: '',
-            longUrl: '',
-            uniqueString: '',
-            error: 'Can not process request',
-          });
+          startIndex += length;
         }
-      }).catch((error) => {
-        response({
-          statusCode: 404,
-          tinyUrl: '',
-          longUrl: '',
-          uniqueString: '',
-          error,
-        });
-      });
+      }
     }
   },
 }];

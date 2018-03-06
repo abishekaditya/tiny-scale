@@ -1,4 +1,5 @@
 const md5 = require('md5');
+const Models = require('../models');
 
 const testUrls = [];
 const localHash = new Set();
@@ -32,7 +33,7 @@ module.exports = {
   up: (queryInterface, Sequelize) => {
     createTestUrls();
     localHash.clear();
-    return queryInterface.bulkInsert('urls', testUrls, {});
+    return Models.bulkInsert('urls', testUrls, {});
   },
 
   down: (queryInterface, Sequelize) => {
