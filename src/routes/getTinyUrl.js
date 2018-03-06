@@ -1,14 +1,10 @@
-const Models = require('../../models');
 const generateUrlHash = require('../helpers/generateUrlHash');
+const tryInsert = require('../helpers/tryInsert');
 
-const tryInsert = (longUrl, tinyUrl) => Models.urls.createObject(tinyUrl, longUrl).then((urlInsertResponse) => {
-  if (urlInsertResponse[1] === true) {
-    return true;
-  } else if (urlInsertResponse[0].long_url === longUrl) {
-    return true;
-  }
-  return false;
-});
+const asyncInsert = async (longUrl, urlHash) => {
+  const insertResponse = await tryInsert(longUrl, urlHash);
+  return insertResponse;
+};
 
 module.exports = [{
   method: 'POST',
@@ -29,7 +25,7 @@ module.exports = [{
       let isUniqueReturned = false;
       while (!isUniqueReturned) {
         const urlHash = generateUrlHash(longUrl, startIndex, length);
-        const insertResponse = tryInsert(longUrl, urlHash);
+        const insertResponse = asyncInsert(longUrl, urlHash);
         if (insertResponse) {
           isUniqueReturned = true;
           response({
