@@ -1,5 +1,5 @@
 const md5 = require('md5');
-const Models = require('../models');
+const redis = require('redis');
 
 const testUrls = [];
 const localHash = new Set();
@@ -31,9 +31,23 @@ const createTestUrls = () => {
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
+    const redisClient = redis.createClient();
+    redisClient.on('connect', () => {
+      console.log('Connected to redis');
+    });
     createTestUrls();
     localHash.clear();
-    return queryInterface.bulkInsert('urls', testUrls, {});
+    return queryInterface.bulkInsert('urls', testUrls, {}).then((bulkInsertResult) => {
+      console.log(bulkInsertResult);
+      testUrls.forEach((urlObject) => {
+        redisClient.hset('urls', urlObject.tiny_url, urlObject.long_url);
+        console.log(urlObject);
+      });
+      redisClient.quit();
+    }).catch((error) => {
+      console.log(error);
+      redisClient.quit();
+    });
   },
 
   down: (queryInterface, Sequelize) => {

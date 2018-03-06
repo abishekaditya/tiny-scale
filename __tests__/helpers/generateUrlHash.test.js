@@ -1,4 +1,5 @@
 const generateHash = require('../../src/helpers/generateUrlHash');
+const jest = require('jest');
 
 describe('Testing the helper function that returns tiny url on passing long url', () => {
   test('Should return a string of length 6', () => {
