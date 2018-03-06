@@ -1,7 +1,9 @@
-const md5 = require('md5');
+const crypto = require('crypto');
 
-module.exports = (longUrl, startIndex, length) => {
-  const tempTinyUrl = md5(longUrl);
-  return tempTinyUrl.substring(startIndex, startIndex + length);
+module.exports = {
+  md5: (longUrl, startIndex, length) => {
+    const tempTinyUrl = crypto.createHash('md5').update(longUrl).digest('base64').replace(/\//g, '_');
+    console.log(tempTinyUrl);
+    return tempTinyUrl.substring(startIndex, startIndex + length);
+  },
 };
-

@@ -12,13 +12,6 @@ beforeEach((done) => {
     });
   });
 });
-afterAll((done) => {
-  Models.urls.destroy({
-    truncate: true,
-  }).then(() => {
-    done();
-  });
-});
 describe('Testing the class function to create or update in urls model', () => {
   test('Should return one tiny url for existing entry', (done) => {
     Models.urls.createObject('abcdef', 'http://test.url').then((url) => {
