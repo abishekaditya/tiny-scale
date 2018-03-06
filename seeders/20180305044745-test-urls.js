@@ -33,7 +33,7 @@ module.exports = {
   up: (queryInterface, Sequelize) => {
     createTestUrls();
     localHash.clear();
-    return Models.bulkInsert('urls', testUrls, {});
+    return queryInterface.bulkInsert('urls', testUrls, {});
   },
 
   down: (queryInterface, Sequelize) => {
