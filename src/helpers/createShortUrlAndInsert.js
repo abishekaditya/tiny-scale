@@ -9,7 +9,7 @@ const recursiveInsert = (longUrl, startIndex, length) => {
       if ((!created) && (createdObject.long_url !== longUrl)) {
         return recursiveInsert(longUrl, startIndex + 1, length);
       }
-      return { longUrl: createdObject.long_url, tinyUrl: createdObject.tiny_url };
+      return { longUrl: createdObject.long_url, tinyUrl: createdObject.tiny_url, created };
     });
 };
 

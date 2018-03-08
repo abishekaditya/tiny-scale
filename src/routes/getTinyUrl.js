@@ -14,9 +14,12 @@ module.exports = [{
         error: 'Invalid input url',
       });
     } else {
+      const redisClient = request.server.plugins['hapi-redis'].client;
       const url = createShortUrlAndInsert(longUrl);
-      // console.log(tinyUrl, longUrl);
       url.then((createResponse) => {
+        if (createResponse.created) {
+          redisClient.hset('urls', createResponse.tinyUrl, createResponse.longUrl);
+        }
         response({
           statusCode: 201,
           tinyUrl: `http://tiny.url/${createResponse.tinyUrl}`,
