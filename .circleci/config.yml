@@ -19,6 +19,8 @@ jobs:
         - POSTGRES_DB: tiny_url_test
         - POSTGRES_PASSWORD: "root"
         - POSTGRES_USER: postgres
+        
+      - image: redis
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
       # documented at https://circleci.com/docs/2.0/circleci-images/
