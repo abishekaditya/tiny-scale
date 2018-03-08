@@ -1,6 +1,6 @@
 const createShortUrlAndInsert = require('../helpers/createShortUrlAndInsert');
 
-module.exports = [{
+module.exports = redisClient => [{
   method: 'POST',
   path: '/getTinyUrl',
   handler: (request, response) => {
@@ -14,7 +14,6 @@ module.exports = [{
         error: 'Invalid input url',
       });
     } else {
-      const redisClient = request.server.plugins['hapi-redis'].client;
       const url = createShortUrlAndInsert(longUrl);
       url.then((createResponse) => {
         if (createResponse.created) {

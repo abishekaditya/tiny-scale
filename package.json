@@ -6,18 +6,16 @@
   "scripts": {
     "test": "NODE_ENV=test sequelize db:migrate:undo:all && NODE_ENV=test sequelize db:migrate && node_modules/.bin/jest --coverage --forceExit",
     "start": "node src/server.js",
-    "pm2start": "node_modules/.bin/pm2 start /src/server.js -i max",
+    "pm2start": "node_modules/.bin/pm2 start /src/server.js -i max --no-daemon",
     "pm2stop": "node_modules/.bin/pm2 stop all"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "catbox-redis": "^4.1.0",
     "good": "^7.3.0",
     "good-console": "^6.4.1",
     "good-squeeze": "^5.0.2",
     "hapi": "^16",
-    "hapi-redis": "^1.0.0",
     "md5": "^2.2.1",
     "pg": "^7.4.1",
     "pm2": "^2.10.1",

@@ -4,4 +4,9 @@ const slash = require('./slash');
 const ping = require('./ping');
 
 
-module.exports = [].concat(getTinyUrl, getLongUrl, slash, ping);
+module.exports = redisClient => [].concat(
+  getTinyUrl(redisClient),
+  getLongUrl(redisClient),
+  slash,
+  ping,
+);

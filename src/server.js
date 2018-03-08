@@ -1,6 +1,6 @@
 const Hapi = require('hapi');
 const Good = require('good');
-const HapiRedis = require('hapi-redis');
+const Redis = require('redis');
 const Routes = require('./routes');
 
 const server = new Hapi.Server();
@@ -10,20 +10,13 @@ server.connection({
   host: 'localhost',
 });
 
-server.route(Routes);
+const redisClient = Redis.createClient();
+
+redisClient.on('connect', () => {
+  server.route(Routes(redisClient));
+});
 
 server.register([
-  {
-    register: HapiRedis,
-    options: {
-      connection: {
-        host: 'localhost',
-        opts: {
-          parser: 'javascript',
-        },
-      },
-    },
-  },
   {
     register: Good,
     options: {
