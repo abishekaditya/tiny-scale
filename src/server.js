@@ -32,15 +32,13 @@ server.register([
       },
     },
   }], () => {
-  if (!module.parent) {
-    server.start((error) => {
-      if (!error) {
-        console.log('Server started');
-      } else {
-        console.log(error);
-      }
-    });
-  }
+  server.start((error) => {
+    if (!error) {
+      console.log('Server started');
+    } else {
+      console.log(error);
+    }
+  });
 });
 
 module.exports = server;

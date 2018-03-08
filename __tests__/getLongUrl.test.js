@@ -1,5 +1,8 @@
 const Server = require('../src/server');
 const Models = require('../models');
+const Redis = require('redis');
+
+const redisClient = Redis.createClient();
 
 describe('Testing the Hapi server that returns tiny url on passing long url', () => {
   beforeEach((done) => {
@@ -14,6 +17,7 @@ describe('Testing the Hapi server that returns tiny url on passing long url', ()
     Models.urls.destroy({
       truncate: true,
     }).then(() => {
+      redisClient.hdel('urls', 'ghijkl');
       done();
     });
   });
@@ -31,6 +35,22 @@ describe('Testing the Hapi server that returns tiny url on passing long url', ()
     const request = {
       method: 'GET',
       url: '/getLongUrl?tinyUrl=000000',
+    };
+    Server.inject(request, (response) => {
+      expect(response.result).toEqual({
+        statusCode: 404,
+        tinyUrl: '',
+        longUrl: '',
+        uniqueString: '',
+        error: 'Invalid input url',
+      });
+      done();
+    });
+  });
+  test('Should return an error for an invalid url', (done) => {
+    const request = {
+      method: 'GET',
+      url: '/getLongUrl?tinyUrl=0000',
     };
     Server.inject(request, (response) => {
       expect(response.result).toEqual({
