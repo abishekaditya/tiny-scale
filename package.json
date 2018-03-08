@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "NODE_ENV=test sequelize db:migrate:undo:all && NODE_ENV=test sequelize db:migrate && node_modules/.bin/jest --coverage --forceExit",
-    "ci_test": "NODE_ENV=ci_test sequelize db:migrate:undo:all && NODE_ENV=ci_test sequelize db:migrate && NODE_ENV=ci_test node_modules/.bin/jest --coverage --forceExit",
+    "test": "NODE_ENV=test sequelize db:migrate:undo:all && NODE_ENV=test sequelize db:migrate && node_modules/.bin/jest --coverage --runInBand --forceExit",
+    "ci_test": "NODE_ENV=ci_test sequelize db:migrate:undo:all && NODE_ENV=ci_test sequelize db:migrate && NODE_ENV=ci_test node_modules/.bin/jest --coverage --runInBand --forceExit",
     "start": "node src/server.js",
     "pm2start": "node_modules/.bin/pm2 start /src/server.js -i max --no-daemon",
     "pm2stop": "node_modules/.bin/pm2 stop all"
