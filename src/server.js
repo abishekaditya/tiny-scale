@@ -12,9 +12,7 @@ server.connection({
 
 const redisClient = Redis.createClient();
 
-redisClient.on('connect', () => {
-  server.route(Routes(redisClient));
-});
+server.route(Routes(redisClient));
 
 server.register([
   {

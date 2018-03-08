@@ -1,11 +1,14 @@
 const Server = require('../src/server');
-const Routes = require('../src/routes');
+const Models = require('../models');
 
 describe('Testing the Hapi server that returns tiny url on passing long url', () => {
-  test('Should contain correct number of routes', () => {
-    expect(Routes.length).toBe(Server.table('localhost')[0].table.length);
+  afterAll((done) => {
+    Models.urls.destroy({
+      truncate: true,
+    }).then(() => {
+      done();
+    });
   });
-
   test('Should return a string of length 6 for appending to the url', (done) => {
     const request = {
       method: 'POST',
