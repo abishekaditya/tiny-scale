@@ -38,7 +38,6 @@ module.exports = redisClient => [{
             }
           });
         } else {
-          console.log('Response from Redis');
           response({
             long_url: redisResult,
           });
